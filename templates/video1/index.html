@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Form</title>
+    <style>
+        .preview {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        
+        .preview p {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Видео с бегущей строкой</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+    
+    <div class="preview" id="text-preview" 
+         style="
+                 color: {{ text_color }}; 
+                 background-color: {{ background_color }}; 
+                 width: max-content;
+                 text-align: center;
+                 font-size: 10rem;
+                 "
+    >
+        <p id="text-preview-text">{{ text }}</p>
+    </div>
+    
+    <script>
+        const textInput = document.getElementById('id_text');
+        const colorInput = document.getElementById('id_text_color');
+        const backgroundColorInput = document.getElementById('id_background_color');
+        const textPreview = document.getElementById('text-preview');
+        const textPreviewText = document.getElementById('text-preview-text');
+        
+        textInput.addEventListener('input', updatePreview);
+        colorInput.addEventListener('input', updatePreview);
+        backgroundColorInput.addEventListener('input', updatePreview);
+        
+        function updatePreview() {
+            const text = textInput.value;
+            const color = colorInput.value;
+            const backgroundColor = backgroundColorInput.value;
+            const fontSize = Math.max(1, Math.min(10, 10 - Math.floor(text.length / 5)));
+            textPreviewText.style.fontSize = `${fontSize}rem`;
+            textPreviewText.style.color = color;
+            textPreviewText.style.backgroundColor = backgroundColor;
+            textPreviewText.textContent = text;
+        }
+    </script>
+</body>
+</html>
