@@ -1,1 +1,18 @@
-
+version: "3.7"
+services:
+  videomaker:
+    image: video_image
+    build:
+      context: .
+    container_name: video_maker
+    environment:
+      - DISPLAY=host.docker.internal:0
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    command: >
+      sh -c "export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null:0)
+             python manage.py makemigrations && 
+             python manage.py migrate && 
+             python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "3333:8000"

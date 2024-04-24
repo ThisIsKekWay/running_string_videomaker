@@ -38,4 +38,4 @@ def create_video(
     add(full_name, bg_color=bg_color, font_color=text_color)
     file_path = f'media/{full_name}.mp4'
     scene.write_video(file_path)
-    return file_path
+    return full_name

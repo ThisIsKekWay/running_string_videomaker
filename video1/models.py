@@ -2,6 +2,7 @@ from django.db import models
 
 
 class VideoRequests(models.Model):
+    id = models.AutoField(primary_key=True)
     filename = models.CharField(max_length=255)
     creation_date = models.DateTimeField(auto_now_add=True)
     font_color = models.CharField(max_length=255)
