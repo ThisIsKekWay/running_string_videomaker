@@ -14,7 +14,7 @@ def index(request):
             bg_color = form.cleaned_data['background_color']
             text_color = form.cleaned_data['text_color']
             video = create_video(text, bg_color, text_color)
-            response = FileResponse(open("media/" + video + '.mp4', 'rb'))
+            response = FileResponse(open("media/" + video + '.mp4', 'rb'), content_type='video/mp4')
             response['Content-Disposition'] = f'attachment; filename={video}.mp4'
             return response
     else:

@@ -1,6 +1,17 @@
 import datetime
+import re
+
 import movis as mv
 from .models import add
+import unidecode
+
+
+def translate_cyrillic_to_latin(text):
+    return unidecode.unidecode(text)
+
+
+def remove_punctuation(text):
+    return re.sub(r'[^\w\s]', '', text)
 
 
 def create_video(
@@ -8,11 +19,6 @@ def create_video(
         bg_color,
         text_color,
 ):
-    if len(text) > 20:
-        name = text[:20]
-    else:
-        name = text
-
     scene_size = (100, 100)
     text_layer = mv.layer.Text(text, font_size=50, font_family='Arial', color=text_color)
 
@@ -32,6 +38,11 @@ def create_video(
     scene['text'].position.enable_motion().extend(
         keyframes=[0.0, 3.0], values=[start_pos, end_pos], easings=['ease_in_out']
     )
+    name = remove_punctuation(text)
+    if len(name) > 20:
+        name = translate_cyrillic_to_latin(name[:20])
+    else:
+        name = translate_cyrillic_to_latin(name)
 
     time = datetime.datetime.utcnow().strftime("%Y-%m-%d_%H-%M-%S")
     full_name = f"{name}_{time}"
